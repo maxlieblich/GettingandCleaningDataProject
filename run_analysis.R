@@ -33,6 +33,15 @@ vars <- sort(c(grep("mean\\(\\)", names(master)),
 
 final <- master[,vars]
 
+clean <- function(x) {
+  x <- sub("BodyBody", "Body", x, fixed=T)
+  x <- sub("-mean()", "Mean", x, fixed=T)
+  x <- sub("-std()", "Std", x, fixed=T)
+  sub("-", ".", x, fixed=T)
+}
+
+names(final) <- sapply(names(final), clean)
+
 # make a new dataframe that has the means for each subject/activity pair
 # uses data.table to make it easier (and faster!) to calculate the correct means
 # the data.table is then cast back to a data.frame (so, e.g., a client can subset it
